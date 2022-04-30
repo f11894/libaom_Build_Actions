@@ -24,16 +24,17 @@ jobs:
       run: |
         set MSYSTEM=MINGW64
         set HOME=${{ github.workspace }}
-        set CFLAGS=-flto -v
+        set CFLAGS=-flto
         set CXXFLAGS=%CFLAGS%
         set LDFLAGS=-static -static-libgcc -static-libstdc++ -flto -s
         git clone https://aomedia.googlesource.com/aom
         C:\msys64\usr\bin\bash -lc "cd aom && mkdir gcc_cmake && cd gcc_cmake && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release"
         C:\msys64\usr\bin\bash -lc "cd aom/gcc_cmake && ninja"
         copy /y aom\gcc_cmake\*.exe .\
-        copy /y aom\LICENSE.txt LICENSE.txt
+        copy /y aom\LICENSE LICENSE
+        copy /y aom\PATENTS PATENTS
         for /f "tokens=7" %%i in ('aomenc.exe --help ^| find "AOMedia Project AV1 Encoder"') do set "aom_version=%%~i"
-        7z a "aom_v%aom_version%_GCC_x64.7z" *.exe LICENSE.txt
+        7z a "aom_v%aom_version%_GCC_x64.7z" aomenc.exe aomdec LICENSE PATENTS
     - name: Upload result
       uses: actions/upload-artifact@v2
       with:
