@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: msys2/setup-msys2@v2
@@ -54,7 +54,7 @@ jobs:
         for /f "tokens=7" %%i in ('aomenc.exe --help ^| find "AOMedia Project AV1 Encoder"') do set "aom_version=%%~i"
         7z a "aom_v%aom_version%_GCC_x64.7z" aomenc.exe aomdec.exe LICENSE PATENTS
     - name: Upload result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: aom
         path: |
@@ -66,9 +66,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: aom
         path: artifacts
